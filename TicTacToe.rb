@@ -27,22 +27,21 @@ class Game
     if response == 'y'
       puts "Great let's get started"
       p = Game.new
-    elsif answer == 'n'
+    elsif response == 'n'
       abort('goodbye')
     else
       # if the user doesn't put y or n in I'm having troube restarting the process - none of the loops seem to work.
       puts "Sorry, didn't catch that, please press y for yes and n for no"
       input = gets.chomp
+      respond(input)
     end
   end
 
   def order(order)
     if order == 'f'
-      @player_1 = @human
-      @player_2 = @computer
+      return true
     elsif order == 's'
-      @player_2 = @human
-      @player_1 = @computer
+      return false
     else
     end
   end
@@ -53,10 +52,10 @@ class Game
     end
   end
   def comp_move(number)
-    while number == 'X' || number == 'O'
-    number = BOARD[rand(1..9)]
+    until (1..9) === number
+      number = BOARD[rand(1..9)]
     end
-    puts "#{@computer} moved to #{BOARD[number]}"
+    puts "your opponent moved to #{BOARD[number]}"
     BOARD[number] = 'O'
   end
 end
@@ -66,23 +65,24 @@ puts "Hello! would you like to play a game of TicTacToe? type y for yes and n fo
 p.respond(gets.chomp)
 p.board_current
 puts "Great! would you like to play first or second? type f for first and s for second."
-p.order(gets.chomp)
-
+input = p.order(gets.chomp)
 count = 0
 while count <= 9
 
-  if @player_1 == @human
+  if input == true
   puts "Player_1 its your move. select a number (1-9)"
   p.human_move(gets.to_i)
   p.board_current
   p.comp_move(rand(1..9))
   p.board_current
-  else @player_1 = @computer
+  elsif input == false
   p.comp_move(rand(1..9))
   p.board_current
   puts "Player_2 its your move. select a number (1-9)"
   p.human_move(gets.to_i)
   p.board_current
+  else
+    raise "error"
   end
 
   count += 1
