@@ -8,7 +8,7 @@
 # we need a way to keep a tally of which pieces on the board are left
 # we need a way to determine a tie or a winner.
 
-BOARD = {1 => '1', 2 => '2', 3 => '3',4 => '4', 5 => '5', 6 => '6', 7 => '7', 8 => '8', 9 => '9'}
+BOARD = {1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9}
 
 class Game
   attr_accessor :human, :computer
@@ -31,6 +31,9 @@ class Game
     elsif order == 's'
       return false
     else
+      puts 'please select f to play first or s to play second'
+      order = gets.chomp
+      player_order(order)
     end
   end
 end
@@ -40,17 +43,16 @@ class Human
   def says(something)
     if something == 'y'
       puts "Great let's get started"
-      g = Game.new
     elsif something == 'n'
       abort('goodbye')
     else
       puts "Sorry, didn't catch that, please press y for yes and n for no"
       something = gets.chomp
-      respond(something)
+      says(something)
     end
   end
 
-  def play(move)
+  def plays(move)
     if (1..9)===(move)
       BOARD[move] ='X'
     end
@@ -59,12 +61,12 @@ class Human
 end
 
 class Computer
-  def comp_play(move)
-    until (1..9) === number
-      number = BOARD[rand(1..9)]
+  def comp_plays(move)
+    until (1..9) === BOARD[move]
+      move = BOARD[rand(1..9)]
     end
-    puts "your opponent moved to #{BOARD[number]}"
-    BOARD[number] = 'O'
+    puts "your opponent moved to #{BOARD[move]}"
+    BOARD[move] = 'O'
   end
 end
 
@@ -82,15 +84,15 @@ while count <= 9
 
   if input == true
     puts "Player_1 its your move. select a number (1-9)"
-    human.play(gets.to_i)
+    human.plays(gets.to_i)
     game.game_status
-    computer.comp_play(rand(1..9))
+    computer.comp_plays(rand(1..9))
     game.game_status
   elsif input == false
-    computer.comp_play(rand(1..9))
+    computer.comp_plays(rand(1..9))
     game.game_status
     puts "Player_2 its your move. select a number (1-9)"
-    human.play(gets.to_i)
+    human.plays(gets.to_i)
     game.game_status
   else
     raise "error"
