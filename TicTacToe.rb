@@ -8,7 +8,7 @@
 # we need a way to keep a tally of which pieces on the board are left
 # we need a way to determine a tie or a winner.
 
-BOARD = {1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9}
+BOARD = [0,1,2,3,4,5,6,7,8,9]
 
 class Game
   attr_accessor :human, :computer
@@ -53,20 +53,77 @@ class Human
   end
 
   def plays(move)
-    if (1..9)===(move)
+    if BOARD[move] == 'X'
+      puts "Please pick a valid move"
+      move = gets.to_i
+      plays(move)
+    elsif BOARD[move] == 'O'
+      puts "Please pick a valid move"
+      move = gets.to_i
+      plays(move)
+    elsif (1..9)===(move)
       BOARD[move] ='X'
+    else
+      raise 'error'
     end
 
   end
+
+  def win?
+    board_s = BOARD.map {|a| a.to_s}
+    if (board_s[1] + board_s[2] + board_s[3] == "XXX")
+      puts "You've won!"
+    elsif (board_s[3] + board_s[5] + board_s[7] == "XXX")
+      puts "You've won!"
+    elsif (board_s[4] + board_s[5] + board_s[6] == "XXX")
+      puts "You've won!"
+    elsif (board_s[7] + board_s[8] + board_s[9] == "XXX")
+      puts "You've won!"
+    elsif (board_s[1] + board_s[4] + board_s[7] == "XXX")
+      puts "You've won!"
+    elsif (board_s[2] + board_s[5] + board_s[8] == "XXX")
+      puts "You've won!"
+    elsif (board_s[3] + board_s[6] + board_s[9] == "XXX")
+      puts "You've won!"
+    elsif (board_s[1] + board_s[5] + board_s[9] == "XXX")
+      puts "You've won!"
+    else
+    end
+
+  end
+
+
 end
 
 class Computer
   def comp_plays(move)
-    until (1..9) === BOARD[move]
+    until (1..9) === (BOARD[move.to_i])
       move = BOARD[rand(1..9)]
     end
     puts "your opponent moved to #{BOARD[move]}"
     BOARD[move] = 'O'
+  end
+
+  def win?
+    board_s = BOARD.map {|a| a.to_s}
+    if (board_s[1] + board_s[2] + board_s[3] == "OOO")
+      puts "The Computer has won."
+    elsif (board_s[3] + board_s[5] + board_s[7] == "OOO")
+      puts "The Computer has won."
+    elsif (board_s[4] + board_s[5] + board_s[6] == "OOO")
+      puts "The Computer has won."
+    elsif (board_s[7] + board_s[8] + board_s[9] == "OOO")
+      puts "The Computer has won."
+    elsif (board_s[1] + board_s[4] + board_s[7] == "OOO")
+      puts "The Computer has won."
+    elsif (board_s[2] + board_s[5] + board_s[8] == "OOO")
+      puts "The Computer has won."
+    elsif (board_s[3] + board_s[6] + board_s[9] == "OOO")
+      puts "The Computer has won."
+    elsif (board_s[1] + board_s[5] + board_s[9] == "OOO")
+      puts "The Computer has won."
+    else
+    end
   end
 end
 
@@ -86,14 +143,18 @@ while count <= 9
     puts "Player_1 its your move. select a number (1-9)"
     human.plays(gets.to_i)
     game.game_status
-    computer.comp_plays(rand(1..9))
+    human.win?
+    p computer.comp_plays(rand(1..9))
     game.game_status
+    computer.win?
   elsif input == false
     computer.comp_plays(rand(1..9))
     game.game_status
+    computer.win?
     puts "Player_2 its your move. select a number (1-9)"
     human.plays(gets.to_i)
     game.game_status
+    human.win?
   else
     raise "error"
   end
