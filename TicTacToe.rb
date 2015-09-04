@@ -2,6 +2,30 @@ BOARD = [0,1,2,3,4,5,6,7,8,9]
 HUMAN_MOVES = []
 COMPUTER_MOVES = []
 
+module Boardlike
+
+  BOARD = [0,1,2,3,4,5,6,7,8,9]
+
+  def board_current
+    @row_1 = "#{BOARD[1]} | #{BOARD[2]} | #{BOARD[3]} "
+    @row_2 = "#{BOARD[4]} | #{BOARD[5]} | #{BOARD[6]} "
+    @row_3 = "#{BOARD[7]} | #{BOARD[8]} | #{BOARD[9]} "
+    @line = '---------'
+      puts @row_1
+      puts @line
+      puts @row_2
+      puts @line
+      puts @row_3
+  end
+end
+
+module Moveable
+  extend Boardlike
+
+
+
+end
+
 module Unbeatable
   $winning_combos = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
   attr_accessor :move
@@ -51,19 +75,7 @@ module Unbeatable
 end
 
 class Game
-  attr_accessor :human, :computer
-
-  def game_status
-    @row_1 = "#{BOARD[1]} | #{BOARD[2]} | #{BOARD[3]} "
-    @row_2 = "#{BOARD[4]} | #{BOARD[5]} | #{BOARD[6]} "
-    @row_3 = "#{BOARD[7]} | #{BOARD[8]} | #{BOARD[9]} "
-    @line = '---------'
-      puts @row_1
-      puts @line
-      puts @row_2
-      puts @line
-      puts @row_3
-  end
+  include Boardlike
 
   def player_order(order)
     if order == 'f'
@@ -79,6 +91,8 @@ class Game
 end
 
 class Human
+  include Moveable
+
 
   def says(something)
     if something == 'y'
@@ -137,6 +151,7 @@ end
 
 class Computer
   include Unbeatable
+  include Moveable
 
   def comp_move(move)
       move = move.flatten
@@ -160,6 +175,7 @@ class Computer
       if board_s[(first_digit_ary[n])] + board_s[second_digit_ary[n]] + board_s[third_digit_ary[n]] == "000"
         puts "The Computer has won. Play again? y/n"
         answer = gets.chomp
+
         if answer == 'y'
           Game.initialize
         elsif answer == 'n'
