@@ -1,14 +1,55 @@
-#create a game of TicTacToe to be played in the command line.
-# first we need two players 1 human, 1 computer
-# we need a way to start the game
-# next we need to draw the board.
-# then we need to have a system to populate the board. i.e what do we select
-# then we need a way to add Xs and Os to the board.
-# and an interface to tell us what the computer selected and asking us to select a tile
-# we need a way to keep a tally of which pieces on the board are left
-# we need a way to determine a tie or a winner.
-
 BOARD = [0,1,2,3,4,5,6,7,8,9]
+HUMAN_MOVES = []
+COMPUTER_MOVES = []
+
+module Unbeatable
+  $winning_combos = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
+  attr_accessor :move
+
+  def first
+    @move = [1,2,3,4,5,6,7,8,9]
+  end
+
+  def second
+    a = []
+    b = []
+    c = []
+    if HUMAN_MOVES[-1] == 5
+      winning_combos = [[1,2,3],[7,8,9],[1,4,7],[3,6,9],[1,5,9],[3,5,7]]
+    end
+    winning_combos.each do |x|
+      if x.include?(HUMAN_MOVES[-1])
+          a.push x
+          return a
+      elsif x.include?(COMPUTER_MOVES[-1])
+          b.push x
+      else
+        a.flatten.each do |n|
+          if b.flatten.include?(n)
+                c.push n
+                c -= HUMAN_MOVES
+                c -= COMPUTER_MOVES
+                c = c.delete_if { |elem| elem.flatten.empty? }
+              end
+              return c
+            end
+          end
+        end
+      end
+
+  def dominate
+  a = []
+    $winning_combos.each do |x|
+      n = 0
+      while n <= HUMAN_MOVES.length
+        a.push x if x.include?(HUMAN_MOVES.first) && x.include?(HUMAN_MOVES.last)
+      n += 1
+      end
+    end
+    a -= HUMAN_MOVES
+    return a
+  end
+end
 
 class Game
   attr_accessor :human, :computer
@@ -52,16 +93,17 @@ class Human
     end
   end
 
-  def plays(move)
+  def moves(move)
     if BOARD[move] == 'X'
       puts "Please pick a valid move"
       move = gets.to_i
-      plays(move)
+      moves(move)
     elsif BOARD[move] == 'O'
       puts "Please pick a valid move"
       move = gets.to_i
-      plays(move)
+      moves(move)
     elsif (1..9)===(move)
+      HUMAN_MOVES.push move
       BOARD[move] ='X'
     else
       raise 'error'
@@ -71,61 +113,63 @@ class Human
 
   def win?
     board_s = BOARD.map {|a| a.to_s}
-    if (board_s[1] + board_s[2] + board_s[3] == "XXX")
+    if board_s[1] + board_s[2] + board_s[3] == "XXX"
       puts "You've won!"
-    elsif (board_s[3] + board_s[5] + board_s[7] == "XXX")
+    elsif board_s[3] + board_s[5] + board_s[7] == "XXX"
       puts "You've won!"
-    elsif (board_s[4] + board_s[5] + board_s[6] == "XXX")
+    elsif board_s[4] + board_s[5] + board_s[6] == "XXX"
       puts "You've won!"
-    elsif (board_s[7] + board_s[8] + board_s[9] == "XXX")
+    elsif board_s[7] + board_s[8] + board_s[9] == "XXX"
       puts "You've won!"
-    elsif (board_s[1] + board_s[4] + board_s[7] == "XXX")
+    elsif board_s[1] + board_s[4] + board_s[7] == "XXX"
       puts "You've won!"
-    elsif (board_s[2] + board_s[5] + board_s[8] == "XXX")
+    elsif board_s[2] + board_s[5] + board_s[8] == "XXX"
       puts "You've won!"
-    elsif (board_s[3] + board_s[6] + board_s[9] == "XXX")
+    elsif board_s[3] + board_s[6] + board_s[9] == "XXX"
       puts "You've won!"
-    elsif (board_s[1] + board_s[5] + board_s[9] == "XXX")
+    elsif board_s[1] + board_s[5] + board_s[9] == "XXX"
       puts "You've won!"
     else
     end
-
   end
-
-
 end
 
 class Computer
-  def comp_plays(move)
-    until (1..9) === (BOARD[move.to_i])
-      move = BOARD[rand(1..9)]
+  include Unbeatable
+
+  def comp_move(move)
+      move = move.flatten
+    until (1..9) === (i = BOARD[move.sample.to_i])
+      move = move
     end
-    puts "your opponent moved to #{BOARD[move]}"
-    BOARD[move] = 'O'
+      COMPUTER_MOVES.push BOARD[i]
+      puts "your opponent moved to #{i}"
+      BOARD[i] = 'O'
   end
 
   def win?
     board_s = BOARD.map {|a| a.to_s}
-    if (board_s[1] + board_s[2] + board_s[3] == "OOO")
+    if board_s[1] + board_s[2] + board_s[3] == "OOO"
       puts "The Computer has won."
-    elsif (board_s[3] + board_s[5] + board_s[7] == "OOO")
+    elsif board_s[3] + board_s[5] + board_s[7] == "OOO"
       puts "The Computer has won."
-    elsif (board_s[4] + board_s[5] + board_s[6] == "OOO")
+    elsif board_s[4] + board_s[5] + board_s[6] == "OOO"
       puts "The Computer has won."
-    elsif (board_s[7] + board_s[8] + board_s[9] == "OOO")
+    elsif board_s[7] + board_s[8] + board_s[9] == "OOO"
       puts "The Computer has won."
-    elsif (board_s[1] + board_s[4] + board_s[7] == "OOO")
+    elsif board_s[1] + board_s[4] + board_s[7] == "OOO"
       puts "The Computer has won."
-    elsif (board_s[2] + board_s[5] + board_s[8] == "OOO")
+    elsif board_s[2] + board_s[5] + board_s[8] == "OOO"
       puts "The Computer has won."
-    elsif (board_s[3] + board_s[6] + board_s[9] == "OOO")
+    elsif board_s[3] + board_s[6] + board_s[9] == "OOO"
       puts "The Computer has won."
-    elsif (board_s[1] + board_s[5] + board_s[9] == "OOO")
+    elsif board_s[1] + board_s[5] + board_s[9] == "OOO"
       puts "The Computer has won."
     else
     end
   end
 end
+
 
 game = Game.new
 human = Human.new
@@ -141,25 +185,49 @@ while count <= 9
 
   if input == true
     puts "Player_1 its your move. select a number (1-9)"
-    human.plays(gets.to_i)
+    human.moves(gets.to_i)
     game.game_status
     human.win?
-    p computer.comp_plays(rand(1..9))
+
+    if count == 0
+      x = computer.second
+      p x
+      computer.comp_move(x)
+      p COMPUTER_MOVES
+    else
+      x = computer.dominate
+      p x
+      computer.comp_move(x)
+    end
+
     game.game_status
     computer.win?
+
   elsif input == false
-    computer.comp_plays(rand(1..9))
+
+    if count == 0
+      x = computer.first
+      computer.comp_move(x)
+    elsif count == 1
+      x = computer.second
+      computer.comp_move(x)
+    else
+      x = computer.dominate
+      computer.comp_move(x)
+    end
+
     game.game_status
     computer.win?
     puts "Player_2 its your move. select a number (1-9)"
-    human.plays(gets.to_i)
+    human.moves(gets.to_i)
     game.game_status
     human.win?
+
   else
     raise "error"
   end
-
   count += 1
 end
+
 
 
