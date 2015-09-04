@@ -29,7 +29,6 @@ module Unbeatable
                 c.push n
                 c -= HUMAN_MOVES
                 c -= COMPUTER_MOVES
-                c = c.delete_if { |elem| elem.flatten.empty? }
               end
               return c
             end
@@ -113,23 +112,25 @@ class Human
 
   def win?
     board_s = BOARD.map {|a| a.to_s}
-    if board_s[1] + board_s[2] + board_s[3] == "XXX"
-      puts "You've won!"
-    elsif board_s[3] + board_s[5] + board_s[7] == "XXX"
-      puts "You've won!"
-    elsif board_s[4] + board_s[5] + board_s[6] == "XXX"
-      puts "You've won!"
-    elsif board_s[7] + board_s[8] + board_s[9] == "XXX"
-      puts "You've won!"
-    elsif board_s[1] + board_s[4] + board_s[7] == "XXX"
-      puts "You've won!"
-    elsif board_s[2] + board_s[5] + board_s[8] == "XXX"
-      puts "You've won!"
-    elsif board_s[3] + board_s[6] + board_s[9] == "XXX"
-      puts "You've won!"
-    elsif board_s[1] + board_s[5] + board_s[9] == "XXX"
-      puts "You've won!"
-    else
+
+    first_digit_ary = [1,3,4,7,1,2,3,1]
+    second_digit_ary = [2,5,5,8,4,5,6,5]
+    third_digit_ary = [3,7,6,9,7,8,9,9]
+
+    n = 0
+    while n <= 7
+      if board_s[(first_digit_ary[n])] + board_s[second_digit_ary[n]] + board_s[third_digit_ary[n]] == "XXX"
+        puts "Congratulations! You won! Play again? y/n"
+        answer = gets.chomp
+        if answer == 'y'
+          Game.initialize
+        elsif answer == 'n'
+        else
+          puts 'Please select y for yes or n for no'
+        end
+      else
+        n += 1
+      end
     end
   end
 end
@@ -149,27 +150,28 @@ class Computer
 
   def win?
     board_s = BOARD.map {|a| a.to_s}
-    if board_s[1] + board_s[2] + board_s[3] == "OOO"
-      puts "The Computer has won."
-    elsif board_s[3] + board_s[5] + board_s[7] == "OOO"
-      puts "The Computer has won."
-    elsif board_s[4] + board_s[5] + board_s[6] == "OOO"
-      puts "The Computer has won."
-    elsif board_s[7] + board_s[8] + board_s[9] == "OOO"
-      puts "The Computer has won."
-    elsif board_s[1] + board_s[4] + board_s[7] == "OOO"
-      puts "The Computer has won."
-    elsif board_s[2] + board_s[5] + board_s[8] == "OOO"
-      puts "The Computer has won."
-    elsif board_s[3] + board_s[6] + board_s[9] == "OOO"
-      puts "The Computer has won."
-    elsif board_s[1] + board_s[5] + board_s[9] == "OOO"
-      puts "The Computer has won."
-    else
+
+    first_digit_ary = [1,3,4,7,1,2,3,1]
+    second_digit_ary = [2,5,5,8,4,5,6,5]
+    third_digit_ary = [3,7,6,9,7,8,9,9]
+
+    n = 0
+    while n <= 7
+      if board_s[(first_digit_ary[n])] + board_s[second_digit_ary[n]] + board_s[third_digit_ary[n]] == "000"
+        puts "The Computer has won. Play again? y/n"
+        answer = gets.chomp
+        if answer == 'y'
+          Game.initialize
+        elsif answer == 'n'
+        else
+          puts 'Please select y for yes or n for no'
+        end
+      else
+        n += 1
+      end
     end
   end
 end
-
 
 game = Game.new
 human = Human.new
