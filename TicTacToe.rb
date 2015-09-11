@@ -1,4 +1,51 @@
+# lib
+  # game.rb
+  # board.rb
+# tic_tac_toe.rb
+# README
+
 class Game
+
+  def initialize(human, computer, board, ui)
+    @human = human
+    @computer = computer
+    @board = board
+    @ui = ui  
+  end
+
+  def start
+    ui.greeting
+    answer = ui.ask_to_start
+    if answer == "y"
+      choose_player
+    elsif answer == "n"
+      abort("maybe next time...")
+    else
+      error
+    end
+  end
+
+  def choose_player
+    order_request = ui.which_order
+    if answer == "f"
+      game_loop([@human, @computer])
+    elsif answer == "s"
+      game_loop([@computer, @human])
+    else
+      error
+    end
+  end
+
+  def game_loop(players)
+    player = players.first
+    move = player.make_move(@board)
+    @board.set_move(player.token, move)
+
+    if game_over?
+    else
+      game_loop([players.last, players.first])
+    end
+  end
 
   def win?(current_board)
 
@@ -113,34 +160,17 @@ class ConsoleUI
     @player = player
     @game = game
     @board = board
-
-
-
   end
 
   def greeting
     puts "Hello! would you like to play a game of TicTacToe? type y for yes and n for no"
-    answer = gets.chomp
-      if answer == "y"
-        choose_player
-      elsif answer == "n"
-        abort("maybe next time...")
-      else
-        error
-      end
+    
   end
 
   def choose_player
     puts "Great! let's get started."
     puts "Would you like to play first or second? type f for first and s for second."
-    answer = gets.chomp
-      if answer == "f"
-        human_first_game_play
-      elsif answer == "s"
-        computer_first_game_play
-      else
-        error
-      end
+    
   end
 
   def check_win(winner)
@@ -198,9 +228,14 @@ class ConsoleUI
 end
 
 
-player = Player.new
-game = Game.new
-board = Board.new(game)
-console = ConsoleUI.new(player, game, board)
+human = Human.new
+computere = Computer.new
+
+
+board = Board.new
+console = ConsoleUI.new
+
+game = Game.new(human, computer, board, ui)
+game.start
 
 console.greeting
