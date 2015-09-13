@@ -9,6 +9,7 @@ class Strategy
   def human
     move = gets.to_i
     @human_moves.push move
+    p @human_moves
     return move
   end
 
@@ -25,10 +26,11 @@ class Strategy
       move = available_moves.sample
       @computer_moves.push move
       return move
+
     else
       @winning_combinations.each do |i|
+        # this takes care of preventing consecutive winning moves
         if i.include?(@human_moves[0]) && i.include?(@human_moves[-1])
-          # this takes care of any direct case
           a.push i
           a = a.flatten
           a -= @human_moves.flatten
@@ -49,5 +51,6 @@ class Strategy
         end
       end
     end
+    p @computer_moves
   end
 end

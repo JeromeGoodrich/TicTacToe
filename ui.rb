@@ -1,10 +1,6 @@
-class UI
 
-  def initialize(board,human,computer)
-    @board = board
-    @human = human
-    @computer = computer
-  end
+
+class UI
 
   def ask_to_start
     puts "Would you like to play a game of TicTacToe? type y for yes and n for no"
@@ -26,15 +22,18 @@ class UI
     row_2 = "#{board[4]} | #{board[5]} | #{board[6]} "
     row_3 = "#{board[7]} | #{board[8]} | #{board[9]} "
     line = '---------'
+    space = ''
+      puts space
       puts row_1
       puts line
       puts row_2
       puts line
       puts row_3
+      puts space
   end
 
   def make_move
-      puts "Make a move by choosing an available number 1-9"
+    puts "Make a move by choosing an available number 1-9"
   end
 
   def error
@@ -42,9 +41,9 @@ class UI
   end
 
   def game_over(outcome)
-    if outcome == @human
+    if outcome == [1,2]
       puts "Congratulations you've won!!!"
-    elsif outcome == @computer
+    elsif outcome == [2,1]
       puts "The computer has won..."
     elsif outcome == "tie"
       puts "The game is a tie..."

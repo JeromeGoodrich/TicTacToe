@@ -1,3 +1,7 @@
+require "./player"
+require "./board"
+require "./ui"
+
 class Game
 
   def initialize(player1, player2, board, ui)
@@ -25,6 +29,7 @@ class Game
       @player_order = [1,2]
       game_loop([@player1, @player2])
     elsif order_request == "s"
+      @player_order = [2,1]
       game_loop([@player2, @player1])
     else
       @ui.error
@@ -39,7 +44,7 @@ class Game
     board = @board.set_move(token, move)
     @ui.print_board(board)
       if over?(board)
-        @ui.game_over(player)
+        @ui.game_over(@player_order)
         start
       else
       @player_order = @player_order.reverse
@@ -58,13 +63,13 @@ class Game
         return true
       elsif board_s[(first_digit_ary[n])] + board_s[(second_digit_ary[n])] + board_s[(third_digit_ary[n])] == "OOO"
         return true
-      elsif n == 7
-        return true
-        ui.game_over("tie")
-      else
-        return false
       end
       n += 1
+    end
+    #checks for tie
+    if (current_board - ["X","O"]) == [0]
+      @ui.game_over("tie")
+      start
     end
   end
 end

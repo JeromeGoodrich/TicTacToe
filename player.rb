@@ -1,3 +1,5 @@
+require "./strategy"
+
 class Player
 
   def initialize(strategy)
