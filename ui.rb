@@ -40,6 +40,10 @@ class UI
     puts "bzzzzt error! ERROR"
   end
 
+  def invalid_move
+    puts "please choose a valid move"
+  end
+
   def game_over(outcome)
     if outcome == [1,2]
       puts "Congratulations you've won!!!"

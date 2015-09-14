@@ -42,13 +42,18 @@ class Game
     move = player.make_move(@player_order)
     token = player.token(@player_order)
     board = @board.set_move(token, move)
-    @ui.print_board(board)
+      if board == "invalid"
+        @ui.invalid_move
+        game_loop(players)
+      else
+        @ui.print_board(board)
+      end
       if over?(board)
         @ui.game_over(@player_order)
         start
       else
-      @player_order = @player_order.reverse
-      game_loop([players.last, players.first])
+        @player_order = @player_order.reverse
+        game_loop([players.last, players.first])
       end
   end
 
