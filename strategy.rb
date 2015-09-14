@@ -2,65 +2,63 @@ class Strategy
 
   def initialize
     @winning_combinations = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
-    @human_moves = []
-    @computer_moves = []
   end
 
   def human
+    a =[]
+    b =[]
     move = gets.to_i
-    if @human_moves.include?(move)
-      return move
-    else
-      @human_moves.push move
-      @human_moves
-      return move
+    @winning_combinations.each do |i|
+      if i.include?(move)
+        a << (i - [move] << "X")
+      else
+        b << i
+      end
+      @winning_combinations = a + b
     end
+
+    return move
   end
 
   def ai
     a = []
     b = []
-    # first computer move where first human move is odd
-    if @computer_moves.empty? && (@human_moves[-1]).odd?
-      move = [1,3,5,7,9].sample
-        if @human_moves.include?(move)
-          ai
-        else
-          @computer_moves.push move
-          return move
-        end
-    # first computer move where first human move is even
-    elsif @computer_moves.empty? && (@human_moves[-1]).even?
+    c = []
+    if @winning_combinations.include?("O")
       @winning_combinations.each do |i|
-        if i.include?(@human_moves[-1])
-          a.push i
-          a.each do |j|
-            if j.include?(5)
-              b.push j
-              b = b.flatten
-              b -= @human_moves
-              move = b.sample
-              @computer_moves.push move
-              return move
-            end
-          end
+        if i.include?("X") && i.include?("O")
+          @winning_combinations -= i
         end
       end
 
-    else
-      new_array = @human_moves.combination(2).to_a
       @winning_combinations.each do |i|
-        new_array.each do |j|
-          if i.include?(j)
-            p a = i.flatten - j
-          end
+        if i.include?("X") || i.include?("O")
+          a << i
         end
       end
       a = a.flatten
-      a -= @human_moves.flatten
-      a -= @computer_moves.flatten
+      a -= ["X"]
+      a -= ["O"]
       move = a.sample
-      @computer_moves.push move
+      @winning_combinations.each do |i|
+        if i.include?(move)
+          b << (i - [move] << "O")
+        else
+          c << i
+        end
+        @winning_combinations = a + b
+      end
+      return move
+    elsif
+      move = 5.to_i
+      @winning_combinations.each do |i|
+        if i.include?(move)
+          a << (i - [move] << "O")
+        else
+          b << i
+        end
+        @winning_combinations = a + b
+      end
       return move
     end
   end

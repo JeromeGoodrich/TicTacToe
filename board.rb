@@ -9,12 +9,8 @@ class Board
   end
 
   def set_move(token, move)
-    if @board[move] == "X" || @board[move] == "O"
-      return "invalid"
-    else
       @board[move] = token
       current(@board)
       return @board
-    end
   end
 end
