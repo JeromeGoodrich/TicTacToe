@@ -24,43 +24,49 @@ class Strategy
     a = []
     b = []
     c = []
-    if @winning_combinations.include?("O")
-      @winning_combinations.each do |i|
+    @winning_combinations.each do |i|
+      if i.include?("O")
+
+        #removes eroneous combinations
         if i.include?("X") && i.include?("O")
           @winning_combinations -= i
+        #else
+          #@winning_combinations = winning_combinations
         end
-      end
+        #looks at relevant combinations and pushes numbers into array a
+        @winning_combinations.each do |x|
+          if x.include?("X") || x.include?("O")
+            a << x
+          end
+        end
+           #finds all valid, smart moves
+            a = a.flatten
+            a -= ["X"]
+            a -= ["O"]
+            move = a.sample
+            replace_move(move)
+            return move
 
-      @winning_combinations.each do |i|
-        if i.include?("X") || i.include?("O")
-          a << i
-        end
+      else
+          # 5 is the best first move if available
+          move = 5
+          replace_move(move)
+          return move
       end
-      a = a.flatten
-      a -= ["X"]
-      a -= ["O"]
-      move = a.sample
-      @winning_combinations.each do |i|
-        if i.include?(move)
-          b << (i - [move] << "O")
-        else
-          c << i
-        end
-        @winning_combinations = a + b
-      end
-      return move
-    elsif
-      move = 5.to_i
-      @winning_combinations.each do |i|
-        if i.include?(move)
-          a << (i - [move] << "O")
-        else
-          b << i
-        end
-        @winning_combinations = a + b
-      end
-      return move
     end
   end
-end
+
+  #replaces move with token.
+  def replace_move
+    a =[]
+    b =[]
+    @winning_combinations.each do |i|
+      if i.include?(move)
+        a << (i - [move] << "O")
+      else
+        b << i
+      end
+      @winning_combinations = a + b
+    end
+  end
 
