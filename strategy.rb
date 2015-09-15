@@ -22,22 +22,35 @@ class Strategy
   def ai
     a = []
     b = []
+    c = []
     if (@winning_combinations.flatten.include?(5)) == false && (@winning_combinations.flatten.include?("O") == false)
       move = [1,3,7,9].sample
       replace_move(move)
       return move
+    # finds any potential winning combo that has 2 in a row and fills in the 3rd
     elsif @winning_combinations.flatten.include?("O")
       @winning_combinations.each do |i|
         if i.detect{ |e| i.count(e) > 1 } == ("X" || "O")
-          p a << i
+        p  a << i
+        # if no moves are available that meet the criteria above, find combos that
+        # correspond to combinations with token "O" and pushes them into array b
+        elsif i.include?("O")
+          b << i
         end
-      end
-          a = a.flatten
-          a -= ["X"]
-          a -= ["O"]
-          move = a.sample
-          replace_move(move)
-          return move
+        p  b -= a
+        end
+            a = a.flatten
+            a -= ["X"]
+            a -= ["O"]
+          if a.empty?
+            a = b
+          end
+            a = a.flatten
+            a -= ["X"]
+            a -= ["O"]
+            move = a.sample
+            replace_move(move)
+            return move
     else
         move = 5
         replace_move(move)

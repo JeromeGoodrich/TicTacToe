@@ -7,8 +7,8 @@ class UI
     gets.chomp
   end
 
-  def abort
-    abort("Maybe next time...")
+  def abort_message
+    abort("Till next time!")
   end
 
   def which_order
@@ -47,10 +47,13 @@ class UI
   def game_over(outcome)
     if outcome == [1,2]
       puts "Congratulations you've won!!!"
+      abort_message
     elsif outcome == [2,1]
       puts "The computer has won..."
+      abort_message
     elsif outcome == "tie"
       puts "The game is a tie..."
+      abort_message
     end
   end
 end

@@ -17,7 +17,7 @@ class Game
     if answer == "y"
       choose_player
     elsif answer == "n"
-      @ui.abort
+      @ui.abort_message
     else
       @ui.error
     end
@@ -45,7 +45,6 @@ class Game
     @ui.print_board(board)
       if over?(board)
         @ui.game_over(@player_order)
-        start
       else
         @player_order = @player_order.reverse
         game_loop([players.last, players.first])
@@ -69,7 +68,6 @@ class Game
     #checks for tie
     if (current_board - ["X","O"]) == [0]
       @ui.game_over("tie")
-      start
     end
   end
 end
