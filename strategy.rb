@@ -16,48 +16,37 @@ class Strategy
       end
       @winning_combinations = a + b
     end
-
     return move
   end
 
   def ai
     a = []
     b = []
-    c = []
-    @winning_combinations.each do |i|
-      if i.include?("O")
-
-        #removes eroneous combinations
-        if i.include?("X") && i.include?("O")
-          @winning_combinations -= i
-        #else
-          #@winning_combinations = winning_combinations
+    if (@winning_combinations.flatten.include?(5)) == false && (@winning_combinations.flatten.include?("O") == false)
+      move = [1,3,7,9].sample
+      replace_move(move)
+      return move
+    elsif @winning_combinations.flatten.include?("O")
+      @winning_combinations.each do |i|
+        if i.detect{ |e| i.count(e) > 1 } == ("X" || "O")
+          p a << i
         end
-        #looks at relevant combinations and pushes numbers into array a
-        @winning_combinations.each do |x|
-          if x.include?("X") || x.include?("O")
-            a << x
-          end
-        end
-           #finds all valid, smart moves
-            a = a.flatten
-            a -= ["X"]
-            a -= ["O"]
-            move = a.sample
-            replace_move(move)
-            return move
-
-      else
-          # 5 is the best first move if available
-          move = 5
+      end
+          a = a.flatten
+          a -= ["X"]
+          a -= ["O"]
+          move = a.sample
           replace_move(move)
           return move
-      end
+    else
+        move = 5
+        replace_move(move)
+        return move
     end
   end
 
   #replaces move with token.
-  def replace_move
+  def replace_move(move)
     a =[]
     b =[]
     @winning_combinations.each do |i|
@@ -69,4 +58,4 @@ class Strategy
       @winning_combinations = a + b
     end
   end
-
+end
