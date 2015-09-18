@@ -4,12 +4,12 @@ require "./ui"
 
 class Game
 
-  def initialize(player1, player2, board, ui)
-    @player1 = player1
-    @player2 = player2
+  def initialize(human, ai, minimax, board, ui)
+    @human = human
+    @ai = ai
+    @minimax = minimax
     @board = board
     @ui = ui
-    @player_type = nil
   end
 
   def start
@@ -27,10 +27,12 @@ class Game
     order_request = @ui.which_order
     if order_request == "f"
       @player_order = [1,2]
-      game_loop([@player1, @player2])
+      opponent = choose_opponent
+      game_loop([@human, opponent])
     elsif order_request == "s"
       @player_order = [2,1]
-      game_loop([@player2, @player1])
+      opponent = choose_opponent
+      game_loop([opponent, @human])
     else
       @ui.error
     end
@@ -39,23 +41,24 @@ class Game
   def choose_opponent
     type_of_opponent = @ui.which_opponent
       if type_of_opponent == "h"
-        return "human"
+        return @human
       elsif type_of_opponent == "a"
-        return "ai"
+        return @ai
       elsif type_of_opponent == "m"
-        return "minimax"
+        return @minimax
+      end
   end
 
   def game_loop(players)
     turns_completed = 0
     player = players.first
-    opponent = choose_opponent
+    board = @board.current
     @ui.make_move
-    move = player.make_move(@player_order, opponent, turns_completed)
+    move = player.make_move(board)
     token = player.token(@player_order)
     board = @board.set_move(token, move)
     @ui.print_board(board)
-      if @board.game_won? || @board.game_tie?
+      if @board.game_over? || @board.game_tie?
         @ui.game_over(@player_order)
       else
         @player_order = @player_order.reverse

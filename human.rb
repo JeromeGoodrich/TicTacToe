@@ -1,6 +1,8 @@
-class Human
+require "./player"
 
-  def make_move
+class Human < Player
+
+  def make_move(board)
     move = gets.to_i
   end
 end

@@ -10,7 +10,6 @@ class Board
 
   def set_move(token, move)
       @board[move] = token
-      current(@board)
       return @board
   end
 
@@ -23,9 +22,10 @@ class Board
       return "O"
     else
       return "X"
+    end
   end
 
-  def game_won?
+  def game_over?
     board_s = @board.map {|a| a.to_s}
     first_digit_ary = [1,4,7,1,2,3,1,3]
     second_digit_ary = [2,5,8,4,5,6,5,5]
@@ -43,16 +43,10 @@ class Board
 
   def game_tie?
     if (@board - ["X","O"]) == [0]
-      @ui.game_over("tie")
     end
   end
 
-  def score(board, turns_completed)
-    if game_won?
-      return 1 - turns_completed
-    else
-      return turns_completed - 1
-    end
+  def reset_space_at(space)
+    @board[space.to_i - 1] = space
   end
-
 end

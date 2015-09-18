@@ -1,16 +1,18 @@
 require "./board"
+require "./player"
 
-class Ai
+class Ai < Player
 
-  def initialize
+  def initialize(board)
+    @board = board
     @winning_combinations = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
   end
 
-  def make_move
+  def make_move(board)
     a = []
     b = []
     c = []
-    if @board.current.include?(5) == false && @board.current.include?("O") == false)
+    if @board.current.include?(5) == false && @board.current.include?("O") == false
       move = [1,3,7,9].sample
       replace_move(move)
       return move
@@ -24,8 +26,8 @@ class Ai
         elsif i.include?("O")
           b << i
         end
-        p  b -= a
-        end
+          b -= a
+      end
             a = a.flatten
             a -= ["X"]
             a -= ["O"]
@@ -44,6 +46,9 @@ class Ai
         return move
     end
   end
+
+
+
 
   def replace_move(move)
     a =[]
