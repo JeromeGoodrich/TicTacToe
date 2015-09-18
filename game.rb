@@ -39,48 +39,29 @@ class Game
   def choose_opponent
     type_of_opponent = @ui.which_opponent
       if type_of_opponent == "h"
-        @human
+        return "human"
       elsif type_of_opponent == "a"
-        @ai
+        return "ai"
       elsif type_of_opponent == "m"
-        @minimax
+        return "minimax"
   end
 
-
-
   def game_loop(players)
+    turns_completed = 0
     player = players.first
     opponent = choose_opponent
     @ui.make_move
-    move = player.make_move(@player_order, opponent)
+    move = player.make_move(@player_order, opponent, turns_completed)
     token = player.token(@player_order)
     board = @board.set_move(token, move)
     @ui.print_board(board)
-      if over?(board)
+      if @board.game_won? || @board.game_tie?
         @ui.game_over(@player_order)
       else
         @player_order = @player_order.reverse
+        turns_completed += 1
         game_loop([players.last, players.first])
       end
   end
-
-  def over?(current_board)
-    board_s = current_board.map {|a| a.to_s}
-    first_digit_ary = [1,4,7,1,2,3,1,3]
-    second_digit_ary = [2,5,8,4,5,6,5,5]
-    third_digit_ary = [3,6,9,7,8,9,9,7]
-    n = 0
-    while n <= 7
-      if board_s[(first_digit_ary[n])] + board_s[(second_digit_ary[n])] + board_s[(third_digit_ary[n])] == "XXX"
-        return true
-      elsif board_s[(first_digit_ary[n])] + board_s[(second_digit_ary[n])] + board_s[(third_digit_ary[n])] == "OOO"
-        return true
-      end
-      n += 1
-    end
-    #checks for tie
-    if (current_board - ["X","O"]) == [0]
-      @ui.game_over("tie")
-    end
-  end
 end
+

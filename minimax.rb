@@ -1,8 +1,8 @@
+require "./board.rb"
+
+
 class Minimax
 
-
-@winning_combinations = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
-@game_state =
 # we assign values to game states in order to find the best possible move
 # win = 1, loss = -1, draw or intermediate state = 0
 # there's also this idea of depth to account for since we want the ai
@@ -10,9 +10,9 @@ class Minimax
 # Since minimax is recursive we need to let it know when the game is over.
 # and have it pick the move with the best score.
 
-def make_move(board, turns_completed)
-  return @game.score if game.win?(@human)
-  depth += 1
+def make_move(turns_completed)
+  return @board.score(@board.current, turns_completed) if @board.game_won?
+  turns_completed += 1
   scores = []
   moves = []
 

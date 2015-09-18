@@ -1,5 +1,3 @@
-
-
 class UI
 
   def ask_to_start
