@@ -13,4 +13,16 @@ class Board
       current(@board)
       return @board
   end
+
+  def available_spaces
+    @board - ["X","O",0]
+  end
+
+  def next_player_move
+    if available_spaces.size.even?
+      return "O"
+    else
+      return "X"
+  end
+
 end

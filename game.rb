@@ -15,7 +15,7 @@ class Game
   def start
     answer = @ui.ask_to_start
     if answer == "y"
-      choose_player
+      choose_player_order
     elsif answer == "n"
       @ui.abort_message
     else
@@ -23,7 +23,7 @@ class Game
     end
   end
 
-  def choose_player
+  def choose_player_order
     order_request = @ui.which_order
     if order_request == "f"
       @player_order = [1,2]
@@ -36,10 +36,23 @@ class Game
     end
   end
 
+  def choose_opponent
+    type_of_opponent = @ui.which_opponent
+      if type_of_opponent == "h"
+        @human
+      elsif type_of_opponent == "a"
+        @ai
+      elsif type_of_opponent == "m"
+        @minimax
+  end
+
+
+
   def game_loop(players)
     player = players.first
+    opponent = choose_opponent
     @ui.make_move
-    move = player.make_move(@player_order)
+    move = player.make_move(@player_order, opponent)
     token = player.token(@player_order)
     board = @board.set_move(token, move)
     @ui.print_board(board)

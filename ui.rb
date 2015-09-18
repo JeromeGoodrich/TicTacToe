@@ -40,6 +40,14 @@ class UI
     puts "bzzzzt error! ERROR"
   end
 
+  def which_opponent
+    puts "what kind of opponent will you have?"
+    puts "type h for human"
+    puts "type j if you want to play agianst my ai"
+    puts "type m if you want to play against minimax"
+    gets.chomp
+  end
+
   def invalid_move
     puts "please choose a valid move"
   end

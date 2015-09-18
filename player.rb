@@ -2,8 +2,10 @@ require "./strategy"
 
 class Player
 
-  def initialize(strategy)
-    @strategy = strategy
+  def initialize(human,ai,minimax)
+    @human = human
+    @ai = ai
+    @minimax = minimax
   end
 
   def token(player_order)
@@ -14,11 +16,11 @@ class Player
     end
   end
 
-  def make_move(player_order)
+  def make_move(player_order, opponent)
     if player_order == [1,2]
-      @strategy.human
+      @human.make_move
     elsif player_order == [2,1]
-      @strategy.ai
+      opponent.make_move
     end
   end
 end
