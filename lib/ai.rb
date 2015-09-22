@@ -1,5 +1,4 @@
-require "./board"
-require "./player"
+require "player"
 
 class Ai < Player
 
@@ -41,15 +40,11 @@ class Ai < Player
             replace_move(move)
             return move
     else
-        move = 5
-        replace_move(move)
-        return move
+        # move = 5
+        # replace_move(move)
+        # return move
     end
   end
-
-
-
-
   def replace_move(move)
     a =[]
     b =[]

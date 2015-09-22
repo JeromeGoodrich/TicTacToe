@@ -1,5 +1,5 @@
-require "./board"
-require "./player"
+require "board"
+require "player"
 
 
 class Minimax < Player
@@ -14,21 +14,22 @@ class Minimax < Player
 # Since minimax is recursive we need to let it know when the game is over.
 # and have it pick the move with the best score.
 
-def make_move(board,turns_completed=0, best_score={})
-  return 0 if @board.game_tie?
-  return -1 if @board.game_over?
+def make_move(board, turns_completed=0, best_score={})
+
+  return 0 if @board.game_tie?(board)
+  return -1 if @board.game_over?(board)
 
   # step 1: look at current available_moves
-
   #step 2: pick an available move
   #step 3: simulate the opponent picking a move
+
+
   @board.available_spaces.each do |space|
     possible_board = @board.set_move(@board.next_player_move, space)
-    p best_score[space] = -1 * make_move(possible_board,turns_completed+1, {})
+    best_score[space] = -1 * make_move(possible_board,turns_completed+1, {})
     @board.reset_space_at(space)
   end
 
-  #find the space that gives the highest score
   best_move = best_score.max_by { |key, value| value }[0]
   highest_minimax_score = best_score.max_by { |key, value| value }[1]
 

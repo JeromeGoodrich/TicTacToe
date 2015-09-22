@@ -16,9 +16,9 @@ class UI
   end
 
   def print_board(board)
-    row_1 = "#{board[1]} | #{board[2]} | #{board[3]} "
-    row_2 = "#{board[4]} | #{board[5]} | #{board[6]} "
-    row_3 = "#{board[7]} | #{board[8]} | #{board[9]} "
+    row_1 = "#{board[0]} | #{board[1]} | #{board[2]} "
+    row_2 = "#{board[3]} | #{board[4]} | #{board[5]} "
+    row_3 = "#{board[6]} | #{board[7]} | #{board[8]} "
     line = '---------'
     space = ''
       puts space

@@ -1,10 +1,10 @@
-require "./player"
-require "./board"
-require "./ui"
+require "player"
+require "board"
+require "ui"
 
 class Game
 
-  def initialize(human, ai, minimax, board, ui)
+  def initialize(ai, human, minimax, board, ui)
     @human = human
     @ai = ai
     @minimax = minimax
@@ -51,14 +51,14 @@ class Game
 
   def game_loop(players)
     turns_completed = 0
-    player = players.first
+    p player = players.first
     board = @board.current
     @ui.make_move
-    move = player.make_move(board)
+    move = (player.make_move(board))
     token = player.token(@player_order)
     board = @board.set_move(token, move)
     @ui.print_board(board)
-      if @board.game_over? || @board.game_tie?
+      if @board.game_over?(board) || @board.game_tie?(board)
         @ui.game_over(@player_order)
       else
         @player_order = @player_order.reverse
